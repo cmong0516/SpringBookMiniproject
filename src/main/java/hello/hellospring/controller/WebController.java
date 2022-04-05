@@ -5,36 +5,49 @@ import hello.hellospring.domain.LoginForm;
 import hello.hellospring.domain.LoginService;
 import hello.hellospring.domain.Member;
 import hello.hellospring.domain.MemberForm;
+import hello.hellospring.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RequestMapping("/miniproject")
+@RequiredArgsConstructor
 @Controller
 public class WebController {
 
     private final MemberService memberService;
     private final LoginService loginService;
+    private final MemberRepository memberRepository;
 
     //MemberController 가 생성될때 MemberService 타입의 memberService가 들어감.
-    @Autowired
+//    @Autowired
     //@Autowired를 이용하면 memberService를 연결시켜준다.
-    public WebController(MemberService memberService, LoginService loginService) {
-        this.memberService = memberService;
-        this.loginService = loginService;
+//    public WebController(MemberService memberService, LoginService loginService) {
+//        this.memberService = memberService;
+//        this.loginService = loginService;
+//    }
+
+    @GetMapping("/home")
+    public String homeLogin(@CookieValue(name = "memberId", required = false) Long memberId, Model model) {
+        if (memberId == null) {
+            return "/";
+        }
+
+        Member loginMember = memberRepository.findBy_Id(memberId);
+        if (loginMember == null) {
+            return "/";
+        }
+
+        model.addAttribute("member", loginMember);
+        return "home";
     }
 
     @GetMapping("/best")
@@ -58,7 +71,7 @@ public class WebController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult) {
+    public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             return "login";
         }
@@ -73,8 +86,13 @@ public class WebController {
 
         //로그인 성공 처리
 
+        //쿠키에 시간 정보를 주지 않으면 세션쿠키.
+        //브라우저 종료시까지 유지.
+        Cookie idCookie = new Cookie("memberId", String.valueOf(loginMember.get_Id()));
+        response.addCookie(idCookie);
 
-        return "redirect:/";
+
+        return "redirect:home";
     }
 
 

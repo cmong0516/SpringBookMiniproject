@@ -11,7 +11,7 @@ public interface MemberRepository {
 
     Member save(Member member);
 
-    Optional<Member> findBy_Id(Long _id);
+    Member findBy_Id(Long _id);
 
     Optional<Member> findById(String id);
 

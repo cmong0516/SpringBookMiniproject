@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -54,18 +53,14 @@
     </div>
 </div>
 <div class="indexMain">
+    <h1 th:text="|${member.name}|">안녕하세요</h1>
     <img src="https://img.kr.news.samsung.com/kr/wp-content/uploads/2018/10/1010kook44.png" alt="">
     <h2>1. 도서관 API를 활용하여 대여 횟수별로 정렬하였습니다.</h2>
     <h3>1- 테이블 2- 카드</h3>
     <h2>2. Search 메뉴는 카카오 책 검색 API를 활용하여 조회합니다.</h2>
     <h2>3. 회원가입 정보는 MongoDB 에 저장하여 Session 여부를 확인합니다.</h2>
     <h2>4. ID 별로 읽은책 , 대여목록을 저장하여 Mypage에서 출력합니다.</h2>
-    <h2>5. admin 계정으로 접속시 전체 member 페이지를 볼수있습니다.</h2>
-    <h3>admin 계정 -  id : admin , pw : 98798700</h3>
-
-
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>

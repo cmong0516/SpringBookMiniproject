@@ -19,3 +19,5 @@ public class LoginService {
         return memberRepository.findById(id).filter(m -> m.getPw().equals(pw)).orElse(null);
     }
 }
+
+//문제점 : 누군가 브라우저에서 쿠키값을 변경 가능하다.
